@@ -215,7 +215,7 @@ var LINKS = {
   x: [["Black Panther","Dive beats the 1.5s sleep."],["Black Cat","Hook cancels the inspire window."],["Peni Parker","Mines punish the static position."],["Hela","Thorn out-ranges the blast."]]
 },
 "Nightcrawler": {
-  p: [["Magik","Hinted team-up plus a second dive threat."],["Rogue","Hinted team-up and a body to teleport to."],["Rogue","Her grab sets the spin-teleport engage."],["Mantis","Inspire boosts the spin engage."],["Rocket Raccoon","Beacon covers the five-second commit."]],
+  p: [["Magik","Hinted team-up plus a second dive threat."],["Rogue","Hinted team-up and a body to teleport to."],["Doctor Strange","A shielded Strange forward is a deep teleport anchor, and the ult pull stacks enemies into his range."],["Mantis","Inspire boosts the spin engage."],["Rocket Raccoon","Beacon covers the five-second commit."]],
   x: [["The Thing","Yancy Street Charge grounds the teleport line."],["Namor","Wrath punishes the stacked ult."],["Peni Parker","Mines cover every landing."],["Hela","Thorn out-ranges his burst."]]
 },
 "Rocket Raccoon": {

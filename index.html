@@ -696,7 +696,8 @@ ul{margin:0;padding:0;list-style:none}
   font-family:var(--disp);font-style:italic;font-weight:800;font-size:14px;
   color:#0b0c1e;background:var(--tier);padding:1px 5px;line-height:1.1;
 }
-.tierbit b[data-t="C"]{color:#fff}
+.tierbit b[data-t="C"],.tierbit b[data-t="D"]{color:#fff}
+.card-tier[data-t="C"],.card-tier[data-t="D"]{color:#e8eaf6}
 .dsec{margin-bottom:16px}
 .dsec h3{
   font:700 9.5px/1 var(--ui);letter-spacing:.18em;text-transform:uppercase;
@@ -794,6 +795,9 @@ ul{margin:0;padding:0;list-style:none}
 .pnew .note{color:#e8c983;font-size:12.5px;margin-top:10px}
 
 .pgroup{}
+.pgroup-mid{margin-top:26px;padding-top:18px;border-top:1px dashed var(--line-2)}
+.pgroup-mid .pgroup-head h2{color:var(--gold)}
+.plede{font-size:12.5px;line-height:1.55;color:#9aa0c2;max-width:70ch;margin:10px 0 16px}
 .pgroup-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;padding-bottom:9px;border-bottom:1px solid var(--line)}
 .pgroup-head h2{
   font-family:var(--disp);font-style:italic;font-weight:800;
@@ -832,6 +836,8 @@ ul{margin:0;padding:0;list-style:none}
   padding:4px 7px;background:var(--k);color:#fff;
 }
 .pentry[data-k="mixed"] .pkind{color:#241d05}
+.pentry-flags{display:flex;align-items:center;gap:7px;flex:0 0 auto}
+.pentry-flags .ghost-ver{margin-top:0}
 .pnote{font-size:12.5px;line-height:1.45;color:var(--ink-soft);margin:9px 0 10px}
 .plines{display:grid;gap:5px}
 .plines li{
@@ -1121,7 +1127,7 @@ ul{margin:0;padding:0;list-style:none}
     <div class="rail-foot">
       <span><b>S11 Doomsday</b></span>
       <span>Patch 20261113</span>
-      <span>Stats: RivalsTracker, 10.5 final</span>
+      <span>Stats: RivalsTracker + marvelrivals.gg · 11.0 live</span>
     </div>
   </aside>
 
@@ -1150,6 +1156,7 @@ ul{margin:0;padding:0;list-style:none}
         <div>
           <h1>Map briefings</h1>
           <p>Comps, bans and routes for every map in rotation. Pick a map to open its plan.</p>
+          <p style="margin-top:8px;color:#c9952a;font-weight:600">Incursion Point — the 18v18 Chrono-Annihilation map — joins the rotation on 26 Nov. Briefing lands here once its ranked rules settle.</p>
         </div>
       </header>
       <div class="maps">
@@ -1173,7 +1180,7 @@ ul{margin:0;padding:0;list-style:none}
     <footer class="foot">
       <span><b>Unofficial fan board.</b> Not affiliated with Marvel or NetEase.</span>
       <span class="spacer"></span>
-      <span>Stats: RivalsTracker, 10.5 final · 12 Nov 2026</span>
+      <span>Stats: RivalsTracker (WR·PR) + marvelrivals.gg (BAN) · 11.0 live · 23 Nov 2026</span>
       <span>Patch notes: marvelrivals.com balance post, 10 Nov 2026</span>
       <span>Icons: Marvel Rivals Wiki (Lord / Champion sets)</span>
     </footer>
@@ -1199,8 +1206,8 @@ ul{margin:0;padding:0;list-style:none}
       perform the same way in both lobbies.
     </p>
     <p class="fine">
-      <b>Reading the numbers.</b> Win rate, pick rate and ban rate all come from the same sample: competitive,
-      Diamond and above, final week of Season 10.5. Ban rates only exist from Gold III upward, so there is no
+      <b>Reading the numbers.</b> Win and pick rates come from RivalsTracker, competitive, Season 11 live.
+      Ban rates come from marvelrivals.gg's live sample and only exist from Gold III upward, so there is no
       low-elo ban column. A <b>MUST BAN</b> or <b>MUST PICK</b> ribbon is an editorial call for 11.0, not a stat.
     </p>
     <p class="fine">
@@ -1228,10 +1235,11 @@ ul{margin:0;padding:0;list-style:none}
    App
    ============================================================ */
 var MODES = ["Convergence","Convoy","Domination"];
-var TIER_SET = ["S","A","B","C"];
-var TIER_COLOR = {S:"#f2c14e",A:"#58c8f0",B:"#8f92c8",C:"#5f6588"};
+var TIER_SET = ["S","A","B","C","D"];
+var TIER_COLOR = {S:"#f2c14e",A:"#58c8f0",B:"#8f92c8",C:"#5f6588",D:"#525878"};
 var KIND_LABEL = {buff:"Buff",nerf:"Nerf",mixed:"Mixed",rework:"Rework",new:"New"};
 var PATCH_F = {k:"all", role:"all"};
+var PATCHES = [S11_PATCH, typeof S11_PATCH2 !== "undefined" ? S11_PATCH2 : null].filter(Boolean);
 
 /* no portrait exists for the new hero yet, so he gets a drawn plate instead of a broken image */
 var NC_ART = "data:image/svg+xml;utf8,"
@@ -1457,7 +1465,7 @@ function heroCard(hero,tier){
     + '<button class="card-open" data-hero="'+esc(hero)+'" aria-label="'+esc(nm)+', tier '+tier+(st?', '+st[0]+' percent win rate, '+st[1]+' percent pick rate, '+st[2]+' percent ban rate':'')+'">'
     +   '<span class="card-art">'
     +     '<img src="'+esc(a.src)+'" data-ih="'+esc(hero)+'" data-fb=\''+esc(a.fb)+'\' onerror="imgFail(this)" onload="imgOk(this)"'+rp(a)+' alt="" loading="lazy">'
-    +     '<span class="card-tier" aria-hidden="true">'+tier+'</span>'
+    +     '<span class="card-tier" data-t="'+tier+'" aria-hidden="true">'+tier+'</span>'
     +     (bro ? '<span class="card-flag" data-tag="'+bro.tag+'">'+(bro.tag==="ban"?"Must ban":"Must pick")+'</span>' : '')
     +   '</span>'
     +   '<span class="card-body">'
@@ -1535,37 +1543,44 @@ function guideList(hero){
 }
 
 function patchOf(hero){
-  var found = null;
-  ((S11_PATCH && S11_PATCH.roles) || []).forEach(function(r){
-    ((r && r.entries) || []).forEach(function(e){ if(e.h===hero) found = e; });
+  var out = [];
+  PATCHES.forEach(function(p){
+    ((p && p.roles) || []).forEach(function(r){
+      ((r && r.entries) || []).forEach(function(e){ if(e.h===hero) out.push({e:e,p:p}); });
+    });
   });
-  return found;
+  return out;
+}
+
+function phCard(e, p, body){
+  var label = p.label || p.id;
+  return '<div class="ph" data-k="'+e.k+'">'
+    + '<div class="ph-h"><span class="ghost-ver">'+esc(label)+'</span>'
+    + '<span class="ph-k">'+esc(KIND_LABEL[e.k]||e.k)+'</span><span>'+esc(e.note)+'</span></div>'
+    + body
+    + '</div>';
 }
 
 function patchList(hero){
+  var cards = "";
   if(S11_NEW && hero===S11_NEW.h){
-    return '<div class="dsec"><h3>Patch history</h3><div class="phist"><div class="ph" data-k="new">'
-      + '<div class="ph-h"><span class="ghost-ver">11.0</span><span class="ph-k">New</span>'
-      + '<span>Joined the roster on 13 Nov 2026</span></div>'
-      + '<p class="phnone" style="margin-top:5px">'+esc(S11_NEW.tagline)+'</p>'
-      + '</div></div></div>';
+    cards += phCard({k:"new"}, {id:"11.0"},
+      '<p class="phnone" style="margin-top:5px">'+esc(S11_NEW.tagline)+'</p>');
   }
-  var e = patchOf(hero);
-  if(!e){
+  patchOf(hero).forEach(function(m){
+    var lines = (m.e.lines||[]).map(function(l){
+      return '<li><b>'+esc(l[0])+':</b> '+esc(l[1])+'</li>';
+    }).join("");
+    var tu = (m.e.tu||[]).map(function(t){
+      return '<li><b>Team-up with '+esc(t[0])+':</b> '+esc(t[1])+'</li>';
+    }).join("");
+    cards += phCard(m.e, m.p, (lines||tu) ? '<ul>'+(lines+tu)+'</ul>' : "");
+  });
+  if(!cards){
     return '<div class="dsec"><h3>Patch history</h3>'
-      + '<p class="phnone">No changes in 11.0. The log starts with this season.</p></div>';
+      + '<p class="phnone">No changes in Season 11. The log starts with this season.</p></div>';
   }
-  var lines = (e.lines||[]).map(function(l){
-    return '<li><b>'+esc(l[0])+':</b> '+esc(l[1])+'</li>';
-  }).join("");
-  var tu = (e.tu||[]).map(function(t){
-    return '<li><b>Team-up with '+esc(t[0])+':</b> '+esc(t[1])+'</li>';
-  }).join("");
-  return '<div class="dsec"><h3>Patch history</h3><div class="phist"><div class="ph" data-k="'+e.k+'">'
-    + '<div class="ph-h"><span class="ghost-ver">11.0</span>'
-    + '<span class="ph-k">'+esc(KIND_LABEL[e.k]||e.k)+'</span><span>'+esc(e.note)+'</span></div>'
-    + '<ul>'+(lines+tu)+'</ul>'
-    + '</div></div></div>';
+  return '<div class="dsec"><h3>Patch history</h3><div class="phist">'+cards+'</div></div>';
 }
 
 function openHero(hero){
@@ -1660,10 +1675,12 @@ function heroComps(hero){
 /* ---------- patch notes ---------- */
 function patchTotals(){
   var c = {all:0,buff:0,nerf:0,mixed:0,rework:0,new:0};
-  ((S11_PATCH && S11_PATCH.roles) || []).forEach(function(r){
-    (r.entries||[]).forEach(function(e){
-      c.all++;
-      if(c[e.k]!=null) c[e.k]++;
+  PATCHES.forEach(function(p){
+    ((p && p.roles) || []).forEach(function(r){
+      (r.entries||[]).forEach(function(e){
+        c.all++;
+        if(c[e.k]!=null) c[e.k]++;
+      });
     });
   });
   if(S11_NEW) c.new += 1;
@@ -1682,17 +1699,18 @@ function newPlate(){
     + '</article>';
 }
 
-function patchEntry(e){
+function patchEntry(e, p){
   var lines = (e.lines||[]).map(function(l){
     return '<li><b>'+esc(l[0])+'</b><span>'+esc(l[1])+'</span></li>';
   }).join("");
   var tu = (e.tu||[]).map(function(t){
     return '<li><b>'+esc(t[0])+'</b> \u2014 '+esc(t[1])+'</li>';
   }).join("");
+  var ver = p && p.id!=="11.0" ? '<span class="ghost-ver">'+esc(p.label||p.id)+'</span>' : "";
   return '<article class="pentry" data-k="'+e.k+'">'
     + '<div class="pentry-top">'
     +   '<button class="phero" data-hero="'+esc(e.h)+'">'+face(e.h,30)+'<span>'+esc(nameOf(e.h))+'</span></button>'
-    +   '<span class="pkind">'+esc(KIND_LABEL[e.k]||e.k)+'</span>'
+    +   '<span class="pentry-flags">'+ver+'<span class="pkind">'+esc(KIND_LABEL[e.k]||e.k)+'</span></span>'
     + '</div>'
     + '<p class="pnote">'+esc(e.note)+'</p>'
     + '<ul class="plines">'+lines+'</ul>'
@@ -1705,7 +1723,7 @@ function renderPatch(){
   var totals = patchTotals();
   document.getElementById("patchMeta").innerHTML =
     '<span><b>'+esc(S11_PATCH.season)+'</b> '+esc(S11_PATCH.name)+'</span>'
-    + '<span>'+esc(S11_PATCH.date)+'</span>'
+    + '<span>'+esc(S11_PATCH.date.split(" ").slice(0,2).join(" "))+' – '+esc(PATCHES[PATCHES.length-1].date)+'</span>'
     + '<span>'+totals.all+' heroes changed</span>';
 
   var roles = ["all"].concat((S11_PATCH.roles||[]).map(function(r){return r.role}));
@@ -1730,19 +1748,33 @@ function renderPatch(){
   if(showNew) parts.push(newPlate());
 
   var shown = 0;
-  (S11_PATCH.roles||[]).forEach(function(r){
-    if(PATCH_F.role!=="all" && PATCH_F.role!==r.role) return;
+  PATCHES.forEach(function(p){
     if(PATCH_F.k==="new") return;
-    var list = (r.entries||[]).filter(function(e){
-      if(PATCH_F.k!=="all" && e.k!==PATCH_F.k) return false;
-      if(q && e.h.toLowerCase().indexOf(q)<0) return false;
-      return true;
+    var pShown = 0;
+    var pParts = [];
+    (p.roles||[]).forEach(function(r){
+      if(PATCH_F.role!=="all" && PATCH_F.role!==r.role) return;
+      var list = (r.entries||[]).filter(function(e){
+        if(PATCH_F.k!=="all" && e.k!==PATCH_F.k) return false;
+        if(q && e.h.toLowerCase().indexOf(q)<0) return false;
+        return true;
+      });
+      if(!list.length) return;
+      pShown += list.length;
+      pParts.push('<div class="pgroup"><div class="pgroup-head"><h2>'+esc(r.role)+'</h2>'
+        + '<span>'+esc(p.label||p.id)+' \u00b7 '+list.length+' '+(list.length===1?"change":"changes")+'</span></div>'
+        + '<div class="pgrid">'+list.map(function(e){return patchEntry(e,p)}).join("")+'</div></div>');
     });
-    if(!list.length) return;
-    shown += list.length;
-    parts.push('<section class="pgroup"><div class="pgroup-head"><h2>'+esc(r.role)+'</h2>'
-      + '<span>'+list.length+' '+(list.length===1?"hero":"heroes")+' changed</span></div>'
-      + '<div class="pgrid">'+list.map(patchEntry).join("")+'</div></section>');
+    if(pShown){
+      shown += pShown;
+      if(p.id!=="11.0"){
+        parts.push('<section class="pgroup pgroup-mid"><div class="pgroup-head"><h2>'+esc(p.title)+'</h2>'
+          + '<span>version '+esc(p.version)+' \u00b7 '+esc(p.date)+'</span></div>'
+          + '<p class="plede">'+esc(p.lede)+'</p>' + pParts.join("") + '</section>');
+      } else {
+        parts.push.apply(parts, pParts);
+      }
+    }
   });
 
   var archive = "";

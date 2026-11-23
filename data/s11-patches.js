@@ -176,8 +176,41 @@ var S11_PATCH = {
   ]
 };
 
-/* New to the roster in 11.0. No competitive sample yet, so the dossier shows
-   provisional copy and no win, pick or ban rate. */
+/* Mid-season fix pass, version 20261119 (19 Nov 2026, no downtime).
+   Source: official patch notes, https://www.marvelrivals.com/20261118/41525_1319867.html
+   Hero fixes only — no balance numbers in this one. */
+var S11_PATCH2 = {
+  id: "11.0b",
+  version: "20261119",
+  label: "Mid-season \u00b7 19 Nov",
+  season: "S11",
+  name: "Doomsday",
+  date: "19 Nov 2026",
+  title: "Anniversary fix pass",
+  lede: "The anniversary update carried no balance numbers, but three hero fixes matter: one new Nightcrawler setting, one Black Cat bug that was costing steals, and one Mantis orb-economy correction.",
+  roles: [
+    { role: "Vanguard", entries: [] },
+    { role: "Duelist", entries: [
+      { h: "Black Cat", k: "buff", note: "Bugfix. Turn of Fortune occasionally failed to steal Fortune at all, which is her whole kit.",
+        lines: [
+          ["Turn of Fortune", "fixed: no longer occasionally fails to steal Fortune"]
+        ], tu: [] }
+    ]},
+    { role: "Strategist", entries: [
+      { h: "Nightcrawler", k: "buff", note: "Quality of life. Tandem Teleport can now auto-accept, so the grab no longer dies to a missed confirmation click.",
+        lines: [
+          ["Tandem Teleport", "new \u201cAutomatically Accept Invites\u201d setting: teleport invites are accepted without manual confirmation"]
+        ], tu: [] },
+      { h: "Mantis", k: "mixed", note: "Correction. Hitting barriers and summons no longer mints Life Orbs, so orb income drops a little against shield-heavy teams.",
+        lines: [
+          ["Life Energy Blast", "fixed: no longer grants Life Orbs when hitting barriers or summons"]
+        ], tu: [] }
+    ]}
+  ]
+};
+
+/* New to the roster in 11.0. He now has a live two-week competitive sample,
+   so the dossier shows real numbers (see s11-stats.js). */
 var S11_NEW = {
   h: "Nightcrawler", role: "Strategist",
   tagline: "Teleport support with a duelist's engage.",
@@ -195,20 +228,22 @@ var PATCH_ARCHIVE = [
     counts: { buff: 0, nerf: 0, mixed: 0, rework: 0, new: 0 }, roles: [] }
 ];
 
-/* Pick or ban calls for 11.0. Projected from the 10.5 final sample plus the
-   direction of each change, because ranked restarts with the season. */
+/* Pick or ban calls for 11.0, recomputed from the live Season 11 sample
+   (RivalsTracker WR/PR + marvelrivals.gg ban rates, 23 Nov 2026). */
 var BROKEN = {
-  "Devil Dinosaur": { tag: "ban", why: "44.7% ban rate, and the nerfs trim the engage without removing it." },
-  "Peni Parker":    { tag: "ban", why: "65.8% win rate at Diamond+. Mines slower, still the best zone in the game." },
-  "Phoenix":        { tag: "ban", why: "38.5% ban rate. Spark nerfed, ceiling untouched." },
-  "Emma Frost":     { tag: "ban", why: "20.1% ban rate and the Aegis nerf does not fix the spear." },
-  "Elsa Bloodstone":{ tag: "ban", why: "23.5% ban rate. Falloff start halved, so the case is weaker than last patch." },
-  "Spider-Man":     { tag: "pick", why: "15.9% ban rate, 12.5% pick rate. Nothing in 11.0 touches him." },
-  "Magik":          { tag: "pick", why: "57.0% win rate and untouched. Best duelist win rate in the sample." },
-  "Rocket Raccoon": { tag: "pick", why: "56.6% win rate at 18.3% pick rate, and the falloff buff helps his own damage." },
-  "Doctor Strange": { tag: "pick", why: "35.0% pick rate. Loses 50 shield and keeps the best space tool in the game." },
-  "Invisible Woman":{ tag: "pick", why: "35.7% pick rate. Slower escape, still the strongest defensive support." },
-  "Winter Soldier": { tag: "pick", why: "14.0% ban rate and 23.3% pick rate. Range nerf is real but he still wins the mid fight." }
+  "Devil Dinosaur": { tag: "ban", why: "73% ban rate and a 56.1% win rate. The 11.0 nerfs did not land hard enough." },
+  "Gambit":         { tag: "ban", why: "64% ban rate. Kinetic Cards spread widened, the healing cut is what stings." },
+  "Elsa Bloodstone":{ tag: "ban", why: "64% ban rate. The falloff nerf trimmed her range, not her ban rate." },
+  "Daredevil":      { tag: "ban", why: "42% ban rate on a 55.3% win rate. The quiet S-tier duelist." },
+  "Phoenix":        { tag: "ban", why: "53% ban rate. Spark nerfed twice and she still bans herself." },
+  "Emma Frost":     { tag: "ban", why: "45% ban rate. Aegis nerf did not touch the spear conversion." },
+  "Peni Parker":    { tag: "ban", why: "30% ban rate on a 64.8% win rate. Mines slower, zone still unbeatable." },
+  "Psylocke":       { tag: "ban", why: "28% ban rate at a 54.0% win rate. The flank nobody wants to guess at." },
+  "Rocket Raccoon": { tag: "pick", why: "13.0% pick rate and a 56.0% win rate. Beacon plus falloff buff is a full rotation." },
+  "Mantis":         { tag: "pick", why: "59.7% win rate, best in the game, at 7.7% pick rate. Underdrafted." },
+  "Magik":          { tag: "pick", why: "57.2% win rate and untouched by both patches. Free wins if she is open." },
+  "Doctor Strange": { tag: "pick", why: "32.1% pick rate. Loses 50 shield and keeps the best space tool in the game." },
+  "Invisible Woman":{ tag: "pick", why: "29.8% pick rate. Slower escape, still the strongest defensive support." }
 };
 
 /* Nightcrawler has no legacy HEROES entry, so the profile content ships here
