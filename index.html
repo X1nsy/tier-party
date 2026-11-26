@@ -170,25 +170,33 @@ ul{margin:0;padding:0;list-style:none}
 .bar-tools{margin-left:auto;display:flex;align-items:center;gap:10px}
 
 .search{position:relative;display:flex;align-items:center}
-.search svg{position:absolute;left:10px;width:15px;height:15px;color:var(--steel);pointer-events:none}
-.search input{
-  width:clamp(150px,23vw,270px);
-  height:36px;
-  padding:0 34px 0 32px;
-  font:500 14px/1 var(--ui);
-  color:#fff;
-  background:rgba(255,255,255,.06);
-  border:1px solid var(--line);
-  border-radius:0;
-  clip-path:polygon(0 0,100% 0,calc(100% - 8px) 100%,0 100%);
-  transition:border-color var(--t),background var(--t);
+.search-btn{
+  width:36px;height:36px;display:grid;place-items:center;
+  color:#c3c9e4;background:rgba(255,255,255,.06);border:1px solid var(--line);
+  clip-path:polygon(0 0,100% 0,100% 100%,8px 100%);
+  transition:background var(--t),color var(--t),border-color var(--t);
 }
-.search input::placeholder{color:#8d94b8}
-.search input:focus{outline:none;border-color:var(--gold);background:rgba(255,255,255,.1)}
-.search kbd{
-  position:absolute;right:8px;font:600 11px/1 var(--ui);color:#8d94b8;
-  border:1px solid var(--line);padding:3px 5px;
+.search-btn svg{width:15px;height:15px;pointer-events:none}
+.search-btn:hover,.search-btn[aria-expanded="true"]{background:rgba(255,255,255,.1);color:#fff;border-color:var(--gold)}
+.search-pop{
+  position:fixed;z-index:95;display:flex;align-items:center;gap:6px;padding:7px 8px;
+  background:linear-gradient(180deg,#151641,#0e0f2c);
+  border:1px solid #3c4080;border-top:2px solid var(--gold);
+  box-shadow:0 20px 54px rgba(0,0,0,.6);clip-path:var(--cut-sm);
+  animation:spop .16s cubic-bezier(.2,.7,.3,1);
 }
+.search-pop[hidden]{display:none}
+.search-pop input{
+  flex:1 1 auto;min-width:0;height:34px;padding:0 10px;
+  font:500 14px/1 var(--ui);color:#fff;background:rgba(255,255,255,.07);
+  border:1px solid var(--line);border-radius:0;
+}
+.search-pop input::placeholder{color:#8d94b8}
+.search-pop input:focus{outline:none;border-color:var(--gold);background:rgba(255,255,255,.11)}
+.search-pop .scount{flex:0 0 auto;font:700 10px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:#8d94b8}
+.search-pop .sclear{flex:0 0 auto;width:26px;height:26px;display:grid;place-items:center;color:#c3c9e4;background:rgba(255,255,255,.06);border:1px solid var(--line)}
+.search-pop .sclear:hover{color:#fff;border-color:var(--steel)}
+@keyframes spop{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:none}}
 .icon-btn{
   width:36px;height:36px;display:grid;place-items:center;
   border:1px solid var(--line);color:#c3c9e4;
@@ -982,6 +990,191 @@ ul{margin:0;padding:0;list-style:none}
 .ph li::before{content:"";position:absolute;left:0;top:.5em;width:4px;height:4px;background:#b3b9d4}
 .phnone{font-size:12px;color:#7b80a0}
 
+/* ---------------- role accent, types, tags ---------------- */
+.card{--role:#8f92c8}
+.card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;z-index:4;
+  background:var(--role);pointer-events:none;
+}
+.card-art::before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(155deg,var(--role) 0%,transparent 58%);
+  opacity:.3;mix-blend-mode:screen;
+}
+.card-head{display:flex;align-items:center;gap:6px;min-width:0}
+.card-role{
+  flex:0 0 auto;width:15px;height:15px;display:grid;place-items:center;
+  background:var(--role);color:#12132e;
+  font:800 9px/1 var(--disp);font-style:italic;
+  clip-path:polygon(0 0,100% 0,100% 100%,5px 100%);
+}
+.card-name{flex:1 1 auto;min-width:0}
+.card-type{position:absolute;right:0;bottom:0;z-index:3;display:flex}
+.card-type span{
+  font:800 7.5px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 6px;background:rgba(10,11,28,.84);color:#dfe3f5;
+  border-left:1px solid rgba(255,255,255,.16);white-space:nowrap;
+}
+.card-flag[data-tag="pick-ban"]{background:var(--gold);color:#12132e}
+.card-flag[data-tag="ban"]{background:var(--red);color:#fff}
+.card-flag[data-tag="bis"]{background:#4a4bd0;color:#fff}
+.card-flag[data-tag="sleeper"]{background:#2fa8a0;color:#04231f}
+.card-flag[data-tag="trap"]{background:#d9862a;color:#211301}
+.pbchip[data-tag="pick-ban"]{background:var(--gold);color:#12132e}
+.pbchip[data-tag="ban"]{background:var(--red);color:#fff}
+.pbchip[data-tag="bis"]{background:#4a4bd0;color:#fff}
+.pbchip[data-tag="sleeper"]{background:#2fa8a0;color:#04231f}
+.pbchip[data-tag="trap"]{background:#d9862a;color:#211301}
+
+/* ---------------- tooltip ---------------- */
+#tip{
+  position:fixed;left:0;top:0;z-index:210;max-width:252px;padding:9px 11px;
+  background:linear-gradient(180deg,#161742,#0a0b20);
+  border:1px solid #3c4080;border-top:2px solid var(--gold);
+  box-shadow:0 16px 40px rgba(0,0,0,.6);
+  font:500 11.5px/1.45 var(--ui);color:#dde1f4;
+  opacity:0;transform:translateY(4px);
+  transition:opacity .12s linear,transform .12s ease;
+  pointer-events:none;
+}
+#tip[data-on="1"]{opacity:1;transform:none}
+#tip b{
+  display:block;font:800 9px/1 var(--ui);letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:5px;
+}
+#tip i{display:block;font-style:normal;font-size:10.5px;color:#9aa0c2;margin-top:5px}
+
+/* ---------------- dossier: why tier + tips ---------------- */
+.why-tier{
+  background:#fff;border:1px solid #d9ddec;border-left:3px solid var(--gold);
+  padding:11px 13px;font-size:12.5px;line-height:1.5;color:var(--ink-2);
+}
+.tips{display:grid;gap:7px}
+.tips li{
+  display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px;align-items:start;
+  background:#fff;border:1px solid #e0e3f0;padding:8px 10px;
+  font-size:12px;line-height:1.45;color:var(--ink-soft);
+}
+.tips li b{
+  width:16px;height:16px;display:grid;place-items:center;margin-top:1px;
+  background:var(--ink);color:var(--gold);
+  font:800 9px/1 var(--ui);letter-spacing:0;
+}
+
+/* ---------------- info button + modal ---------------- */
+.fab{
+  position:fixed;right:20px;bottom:20px;z-index:92;
+  width:44px;height:44px;display:grid;place-items:center;
+  border:1px solid #d8b04a;background:linear-gradient(180deg,#f7cf67,#dda428);
+  color:#1d1503;font:800 17px/1 var(--disp);font-style:italic;
+  clip-path:var(--cut-sm);
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+  transition:transform var(--t),box-shadow var(--t),filter var(--t);
+}
+.fab:hover{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 15px 40px rgba(0,0,0,.55)}
+.fab:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.fab::after{
+  content:"";position:absolute;inset:-5px;pointer-events:none;
+  border:1px solid rgba(242,193,78,.6);clip-path:var(--cut-sm);
+  animation:fabpulse 3s ease-out infinite;
+}
+@keyframes fabpulse{
+  0%{opacity:.7;transform:scale(.97)}
+  65%{opacity:0;transform:scale(1.14)}
+  100%{opacity:0;transform:scale(1.14)}
+}
+.infobox{
+  width:min(780px,100%);max-height:90dvh;overflow:auto;
+  background:linear-gradient(180deg,var(--plate-2),var(--plate));
+  color:var(--ink);clip-path:var(--cut);padding:24px 26px 26px;
+  animation:rise .2s cubic-bezier(.2,.7,.3,1);
+}
+.ib-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.ib-kick{font:800 10px/1 var(--ui);letter-spacing:.19em;text-transform:uppercase;color:#7b80a0}
+.infobox h2{
+  font-family:var(--disp);font-style:italic;font-weight:800;
+  font-size:34px;line-height:.9;text-transform:uppercase;margin:5px 0 0;
+}
+.ib-lead{font-size:12.5px;line-height:1.5;color:var(--ink-soft);margin-top:9px;max-width:62ch}
+.ib-sec{margin-top:20px;padding-top:15px;border-top:1px solid var(--line-plate)}
+.ib-sec h3{
+  font-family:var(--disp);font-style:italic;font-weight:800;
+  font-size:19px;line-height:1;text-transform:uppercase;margin-bottom:10px;
+}
+.ib-bullets{display:grid;gap:6px}
+.ib-bullets li{font-size:12.5px;line-height:1.45;color:var(--ink-soft);padding-left:11px;position:relative}
+.ib-bullets li::before{content:"";position:absolute;left:0;top:.55em;width:4px;height:4px;background:var(--gold)}
+.ib-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ib-card{background:#fff;border:1px solid #d9ddec;padding:11px 12px}
+.ib-card h4{
+  font:800 9.5px/1 var(--ui);letter-spacing:.16em;text-transform:uppercase;
+  color:#7b80a0;margin-bottom:8px;
+}
+.ib-card h4 em{font-style:normal;color:var(--gold-deep)}
+.ib-row{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:baseline;
+  font-size:11.5px;line-height:1.35;color:var(--ink-soft);
+  padding:4px 0;border-bottom:1px solid #eef0f8;
+}
+.ib-row:last-child{border-bottom:0}
+.ib-row b{font-weight:700;color:var(--ink-2);text-transform:uppercase;font-size:11px;letter-spacing:.02em}
+.ib-row span{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink)}
+.ib-row em{font-style:normal;font-weight:700;font-size:11px}
+.ib-up{color:#1f8a5c}
+.ib-down{color:#b8353d}
+.ib-legend{display:grid;gap:7px}
+.ib-lrow{
+  display:grid;grid-template-columns:118px minmax(0,1fr);gap:10px;align-items:start;
+  font-size:11.5px;line-height:1.4;color:var(--ink-soft);
+}
+.ib-lrow strong{display:block;font-size:11px;color:var(--ink);font-weight:700}
+.ib-lrow p{margin:0}
+.ib-rule{font-size:10.5px;line-height:1.4;color:#7b80a0;margin-top:3px}
+.ib-tag{
+  display:inline-block;font:800 8.5px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;
+  padding:5px 7px;white-space:nowrap;
+}
+.ib-typegrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ib-trow{font-size:11.5px;line-height:1.4;color:var(--ink-soft);padding:5px 0;border-bottom:1px solid #eef0f8}
+.ib-trow:last-child{border-bottom:0}
+.ib-trow strong{
+  font:800 9px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);
+  display:block;margin-bottom:3px;
+}
+.ib-note{font-size:11px;line-height:1.45;color:#8a90ad;margin-top:14px}
+
+/* ---------------- hero types ---------------- */
+.types{display:grid;gap:clamp(16px,2vw,24px);margin-top:20px}
+.tplate{
+  background:linear-gradient(180deg,var(--plate-2),var(--plate));color:var(--ink);
+  clip-path:var(--cut);padding:18px 20px 20px;
+}
+.tp-head{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  border-bottom:1px solid var(--line-plate);padding-bottom:12px;
+}
+.tp-name{
+  font-family:var(--disp);font-style:italic;font-weight:800;
+  font-size:clamp(26px,3vw,34px);line-height:.9;text-transform:uppercase;
+}
+.tp-group{
+  font:700 9.5px/1 var(--ui);letter-spacing:.16em;text-transform:uppercase;
+  padding:4px 7px;background:var(--c,#3536a8);color:#fff;
+}
+.tp-count{
+  margin-left:auto;font:700 9.5px/1 var(--ui);letter-spacing:.14em;
+  text-transform:uppercase;color:#7b80a0;
+}
+.tp-lead{margin-top:12px;font-size:13px;line-height:1.5;color:var(--ink-2);max-width:78ch}
+.tp-expl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
+.tp-expl div{background:#fff;border:1px solid #d9ddec;border-top:2px solid var(--c,#3536a8);padding:9px 11px}
+.tp-expl b{
+  display:block;font:800 8.5px/1 var(--ui);letter-spacing:.14em;
+  text-transform:uppercase;color:#7b80a0;margin-bottom:5px;
+}
+.tp-expl span{font-size:11.5px;line-height:1.45;color:var(--ink-soft)}
+.tp-roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px;margin-top:16px}
+
 @media (max-width:1000px){
   .maps{grid-template-columns:220px minmax(0,1fr)}
   .dossier{grid-template-columns:minmax(0,300px) minmax(0,1fr)}
@@ -993,8 +1186,21 @@ ul{margin:0;padding:0;list-style:none}
   .nav{height:36px;margin-left:0}
   .nav-btn{padding:0 10px;font-size:15px}
   .bar-tools{margin-left:auto;min-width:0}
-  .search input{width:124px;padding:0 10px 0 30px}
-  .search kbd{display:none}
+  .search-btn{width:34px;height:34px}
+  .search-pop{left:12px;right:12px;width:auto}
+  .fab{right:12px;bottom:12px;width:40px;height:40px;font-size:15px}
+  .infobox{padding:20px 16px 22px;max-height:92dvh}
+  .infobox h2{font-size:28px}
+  .ib-cols,.ib-typegrid{grid-template-columns:1fr}
+  .ib-lrow{grid-template-columns:96px minmax(0,1fr);gap:8px}
+  .card-type span{font-size:7px;padding:3px 5px;letter-spacing:.08em}
+  .card-role{width:14px;height:14px;font-size:8.5px}
+  .why-tier{font-size:12px;padding:10px 11px}
+  .tplate{padding:14px 13px 16px}
+  .tp-name{font-size:24px}
+  .tp-count{margin-left:0;width:100%}
+  .tp-expl{grid-template-columns:1fr;gap:8px}
+  .tp-roster{grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
   .bans{
     flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;padding-bottom:4px;scrollbar-width:none;
     -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 16px),transparent 100%);
@@ -1078,18 +1284,25 @@ ul{margin:0;padding:0;list-style:none}
   <nav class="nav" aria-label="Screens">
     <button class="nav-btn" data-view="board" aria-current="page">Tier List</button>
     <button class="nav-btn" data-view="maps">Maps</button>
+    <button class="nav-btn" data-view="types">Hero Types</button>
     <button class="nav-btn" data-view="patch">Patch Notes</button>
   </nav>
 
   <div class="bar-tools">
     <div class="search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg>
-      <input id="q" type="search" placeholder="Search heroes" aria-label="Search heroes" autocomplete="off" spellcheck="false">
-      <kbd aria-hidden="true">/</kbd>
+      <button class="search-btn" id="searchBtn" data-search aria-expanded="false" aria-controls="searchPop" aria-label="Search" title="Search (/)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg>
+      </button>
     </div>
     <button class="icon-btn" id="helpBtn" aria-label="Shortcuts and credits" title="Shortcuts and credits">?</button>
   </div>
 </header>
+
+<div class="search-pop" id="searchPop" hidden>
+  <input id="q" type="search" placeholder="Search heroes" aria-label="Search heroes" autocomplete="off" spellcheck="false">
+  <span class="scount" id="qcount"></span>
+  <button class="sclear" id="qclear" aria-label="Clear search">&times;</button>
+</div>
 
 <div class="shell">
   <aside class="rail" aria-label="Filters">
@@ -1123,6 +1336,10 @@ ul{margin:0;padding:0;list-style:none}
       <button class="rail-btn" data-pk="mixed" aria-pressed="false">Mixed<span class="rail-note" data-pkcount="mixed"></span></button>
       <button class="rail-btn" data-pk="rework" aria-pressed="false">Reworked<span class="rail-note" data-pkcount="rework"></span></button>
       <button class="rail-btn" data-pk="new" aria-pressed="false">New<span class="rail-note" data-pkcount="new"></span></button>
+    </div>
+    <div class="rail-group" id="typeGroup" role="group" aria-labelledby="lbl-type" hidden>
+      <span class="rail-label" id="lbl-type">Hero type</span>
+      <button class="rail-btn" data-type="" aria-pressed="true">All types<span class="rail-note" id="typeCountAll"></span></button>
     </div>
     <div class="rail-foot">
       <span><b>S11 Doomsday</b></span>
@@ -1163,6 +1380,17 @@ ul{margin:0;padding:0;list-style:none}
         <nav class="maplist" id="maplist" aria-label="Maps"></nav>
         <article class="brief" id="brief"></article>
       </div>
+    </section>
+
+    <section class="screen" id="screen-types" aria-label="Hero types" hidden>
+      <header class="maps-head">
+        <div>
+          <h1>Hero types</h1>
+          <p>The roster sorted by the job each hero actually does. Types cut across roles, so a dive is a dive whether it wears a tank or a duelist badge.</p>
+        </div>
+        <div class="meta" id="typeMeta"></div>
+      </header>
+      <div class="types" id="typeList"></div>
     </section>
 
     <section class="screen" id="screen-patch" aria-label="Patch notes" hidden>
@@ -1208,7 +1436,13 @@ ul{margin:0;padding:0;list-style:none}
     <p class="fine">
       <b>Reading the numbers.</b> Win and pick rates come from RivalsTracker, competitive, Season 11 live.
       Ban rates come from marvelrivals.gg's live sample and only exist from Gold III upward, so there is no
-      low-elo ban column. A <b>MUST BAN</b> or <b>MUST PICK</b> ribbon is an editorial call for 11.0, not a stat.
+      low-elo ban column.
+    </p>
+    <p class="fine">
+      <b>Reading the ribbons.</b> Each ribbon names a decision, not a statistic. <b>Pick or ban</b> wins and gets
+      banned, so take it or deny it. <b>Ban target</b> is banned far more than it wins. <b>Best in slot</b> is the
+      strongest default in its role. <b>Sleeper</b> wins quietly on a low pick rate. <b>Trap</b> is played
+      constantly and wins under half. Hover any ribbon for the exact number behind it.
     </p>
     <p class="fine">
       Unofficial fan project. Hero portraits and map art are hosted on third-party CDNs. Balance changes are
@@ -1218,11 +1452,27 @@ ul{margin:0;padding:0;list-style:none}
   </div>
 </div>
 
+<button class="fab" data-info aria-label="Season 11 briefing" title="Season 11 briefing">i</button>
+
+<div id="tip" role="tooltip"></div>
+
+<div class="ov" id="infoOv" hidden>
+  <div class="infobox" role="dialog" aria-modal="true" aria-labelledby="infoName">
+    <div class="ib-head">
+      <span class="ib-kick">Season 11 &middot; Doomsday</span>
+      <button class="infobox-close" id="infoClose" aria-label="Close briefing">&#10005;</button>
+    </div>
+    <h2 id="infoName">Season briefing</h2>
+    <div id="infoBody"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="data/legacy.js"></script>
 <script src="data/s11-stats.js"></script>
 <script src="data/s11-patches.js"></script>
+<script src="data/s11-meta.js"></script>
 <script src="data/s11-icons.js"></script>
 <script src="data/s11-anim.js"></script>
 <script src="data/s11-combos.js"></script>
@@ -1239,6 +1489,7 @@ var TIER_SET = ["S","A","B","C","D"];
 var TIER_COLOR = {S:"#f2c14e",A:"#58c8f0",B:"#8f92c8",C:"#5f6588",D:"#525878"};
 var KIND_LABEL = {buff:"Buff",nerf:"Nerf",mixed:"Mixed",rework:"Rework",new:"New"};
 var PATCH_F = {k:"all", role:"all"};
+var TYPE_F = null;
 var PATCHES = [S11_PATCH, typeof S11_PATCH2 !== "undefined" ? S11_PATCH2 : null].filter(Boolean);
 
 /* no portrait exists for the new hero yet, so he gets a drawn plate instead of a broken image */
@@ -1255,6 +1506,9 @@ var ART_FIX = {"Nightcrawler":NC_ART};
 /* profiles for heroes the legacy data predates */
 if(typeof S11_HERO_ADD!=="undefined"){
   Object.keys(S11_HERO_ADD).forEach(function(k){ HEROES[k] = S11_HERO_ADD[k]; });
+}
+if(typeof ROLE_FIX!=="undefined"){
+  Object.keys(ROLE_FIX).forEach(function(k){ if(HEROES[k]) HEROES[k].r = ROLE_FIX[k]; });
 }
 
 var S = {
@@ -1382,6 +1636,206 @@ function statOf(hero){
   return Array.isArray(v) ? v : null;
 }
 function broOf(hero){ return BROKEN[hero] || null; }
+var ROLE_TINT = {Vanguard:"#2f6fd0",Duelist:"#d8343c",Strategist:"#2f9e6b"};
+var ROLE_ABBR = {Vanguard:"V",Duelist:"D",Strategist:"S"};
+function tagOf(hero){ return (typeof TAGS!=="undefined" && TAGS[hero]) || null; }
+function tagDef(k){ return (typeof TAG_DEFS!=="undefined" && TAG_DEFS[k]) || {label:k,rule:"",why:"",color:"#5f6588",ink:"#fff"}; }
+function typeOf(hero){ return (typeof TYPES!=="undefined" && TYPES[hero]) || []; }
+function typeDef(t){ return (typeof TYPE_DEFS!=="undefined" && TYPE_DEFS[t]) || {group:"",why:""}; }
+function roleTint(hero){ return ROLE_TINT[roleOf(hero)] || "#8f92c8"; }
+
+/* ---------- tooltips ---------- */
+function tipShow(el){
+  var tip = document.getElementById("tip");
+  if(!tip || !el) return;
+  var l = el.getAttribute("data-tipl") || "";
+  var b = el.getAttribute("data-tipb") || "";
+  if(!l && !b) return;
+  tip.innerHTML = (l ? "<b>"+esc(l)+"</b>" : "") + (b ? "<i>"+esc(b)+"</i>" : "");
+  tip.setAttribute("data-on","1");
+  var r = el.getBoundingClientRect();
+  var w = tip.offsetWidth, h = tip.offsetHeight;
+  var x = r.left + (r.width - w) / 2;
+  var y = r.top - h - 8;
+  if(y < 8) y = r.bottom + 8;
+  x = Math.max(8, Math.min(x, window.innerWidth - w - 8));
+  y = Math.max(8, Math.min(y, window.innerHeight - h - 8));
+  tip.style.left = Math.round(x) + "px";
+  tip.style.top = Math.round(y) + "px";
+}
+function tipHide(){
+  var tip = document.getElementById("tip");
+  if(tip) tip.removeAttribute("data-on");
+}
+document.addEventListener("pointerover", function(e){
+  var t = e.target.closest && e.target.closest("[data-tipl]");
+  if(t) tipShow(t);
+});
+document.addEventListener("pointerout", function(e){
+  var t = e.target.closest && e.target.closest("[data-tipl]");
+  if(!t) return;
+  var to = e.relatedTarget;
+  if(to && t.contains(to)) return;
+  tipHide();
+});
+document.addEventListener("focusin", function(e){
+  var t = e.target.closest && e.target.closest("[data-tipl]");
+  if(t) tipShow(t);
+});
+document.addEventListener("focusout", function(e){
+  var t = e.target.closest && e.target.closest("[data-tipl]");
+  if(t) tipHide();
+});
+
+/* ---------- search popup ---------- */
+function searchEls(){
+  return {
+    pop: document.getElementById("searchPop"),
+    btn: document.getElementById("searchBtn"),
+    q: document.getElementById("q"),
+    cnt: document.getElementById("qcount")
+  };
+}
+function placeSearch(){
+  var e = searchEls();
+  if(!e.pop || !e.btn || e.pop.hidden) return;
+  var r = e.btn.getBoundingClientRect();
+  var w = Math.max(238, Math.min(332, window.innerWidth - 24));
+  e.pop.style.width = w + "px";
+  var x = Math.min(r.right - w, window.innerWidth - w - 12);
+  e.pop.style.left = Math.max(12, Math.round(x)) + "px";
+  e.pop.style.top = Math.round(r.bottom + 8) + "px";
+}
+function updateCount(){
+  var e = searchEls();
+  if(!e.cnt) return;
+  if(S.view === "maps"){
+    var q = (e.q ? e.q.value : "").toLowerCase();
+    var n = MAPS.filter(function(m){
+      return (S.mode === "All" || m.mode === S.mode) && m.map.toLowerCase().indexOf(q) > -1;
+    }).length;
+    e.cnt.textContent = n + (n === 1 ? " map" : " maps");
+    return;
+  }
+  var c = Object.keys(HEROES).filter(matches).length;
+  e.cnt.textContent = c + (c === 1 ? " hero" : " heroes");
+}
+function openSearch(){
+  var e = searchEls();
+  if(!e.pop) return;
+  e.pop.hidden = false;
+  e.pop.style.animation = "none";
+  void e.pop.offsetWidth;
+  e.pop.style.animation = "";
+  if(e.btn) e.btn.setAttribute("aria-expanded","true");
+  placeSearch();
+  updateCount();
+  if(e.q){ e.q.focus(); e.q.select(); }
+}
+function closeSearch(){
+  var e = searchEls();
+  if(!e.pop || e.pop.hidden) return;
+  e.pop.hidden = true;
+  if(e.btn){ e.btn.setAttribute("aria-expanded","false"); e.btn.focus(); }
+  tipHide();
+}
+function setSearch(v){
+  var e = searchEls();
+  if(e.q) e.q.value = v;
+  S.q = (v || "").trim();
+  updateCount();
+}
+window.addEventListener("resize", placeSearch);
+document.addEventListener("scroll", placeSearch, true);
+
+/* ---------- season briefing ---------- */
+function infoTag(k){
+  var d = tagDef(k);
+  return '<span class="ib-tag" data-tag="'+k+'" style="--c:'+d.color+';--i:'+d.ink+'">'+esc(d.label)+'</span>';
+}
+function renderInfo(){
+  var host = document.getElementById("infoBody");
+  if(!host) return;
+  var mb = (typeof META_BRIEF !== "undefined") ? META_BRIEF : {season:"",window:"",bullets:[]};
+  var kick = document.querySelector("#infoOv .ib-kick");
+  if(kick && mb.season) kick.textContent = mb.season;
+
+  var html = '<p class="ib-lead">'+esc(mb.window || "")+'</p>';
+
+  var bullets = mb.bullets || [];
+  if(bullets.length){
+    html += '<div class="ib-sec"><h3>The short version</h3><ul class="ib-bullets">'
+      + bullets.map(function(t){ return "<li>"+esc(t)+"</li>"; }).join("")
+      + "</ul></div>";
+  }
+
+  function row(hero,val,delta){
+    return '<div class="ib-row"><span>'+esc(nameOf(hero))+"</span><b>"+val+"</b>"
+      + (delta ? '<em class="'+delta.cls+'">'+delta.txt+"</em>" : "")
+      + "</div>";
+  }
+
+  var keys = Object.keys(STATS_D);
+  var strong = keys.filter(function(h){ return STATS_D[h][1] >= 4; })
+    .sort(function(a,b){ return STATS_D[b][0] - STATS_D[a][0]; }).slice(0,5);
+  var weak = keys.filter(function(h){ return STATS_D[h][1] >= 8; })
+    .sort(function(a,b){ return STATS_D[a][0] - STATS_D[b][0]; }).slice(0,5);
+
+  html += '<div class="ib-sec"><h3>Strong and weak right now</h3><div class="ib-cols">'
+    + '<div class="ib-card"><h4>Winning</h4>'
+    + strong.map(function(h){ return row(h, STATS_D[h][0]+"%", {cls:"ib-up", txt:STATS_D[h][1]+"% pick"}); }).join("")
+    + "</div>"
+    + '<div class="ib-card"><h4>Struggling</h4>'
+    + weak.map(function(h){ return row(h, STATS_D[h][0]+"%", {cls:"ib-down", txt:STATS_D[h][1]+"% pick"}); }).join("")
+    + "</div></div></div>";
+
+  if(typeof STATS_PREV !== "undefined"){
+    var moves = keys.filter(function(h){ return STATS_PREV[h]; }).map(function(h){
+      return {h:h, d: STATS_D[h][0] - STATS_PREV[h][0]};
+    }).sort(function(a,b){ return Math.abs(b.d) - Math.abs(a.d); }).slice(0,6);
+    if(moves.length){
+      html += '<div class="ib-sec"><h3>Since 10.5</h3><div class="ib-card">'
+        + moves.map(function(m){
+            var d = m.d;
+            return row(m.h, STATS_D[m.h][0]+"%", {
+              cls: d >= 0 ? "ib-up" : "ib-down",
+              txt: (d >= 0 ? "+" : "") + d.toFixed(1) + " WR"
+            });
+          }).join("")
+        + "</div></div>";
+    }
+  }
+
+  if(typeof TAG_ORDER !== "undefined"){
+    html += '<div class="ib-sec"><h3>What the ribbons mean</h3><div class="ib-legend">'
+      + TAG_ORDER.map(function(k){
+          var d = tagDef(k);
+          return '<div class="ib-lrow">'+infoTag(k)
+            + "<div><p>"+esc(d.why)+'</p><p class="ib-rule">'+esc(d.rule)+"</p></div></div>";
+        }).join("")
+      + "</div></div>";
+  }
+
+  if(typeof TYPE_ORDER !== "undefined"){
+    var groups = ["Vanguard","Duelist","Strategist"];
+    html += '<div class="ib-sec"><h3>What the hero types mean</h3><div class="ib-typegrid">'
+      + groups.map(function(g){
+          var types = TYPE_ORDER.filter(function(t){ return typeDef(t).group === g; });
+          return '<div class="ib-card"><h4>'+esc(g)+"</h4>"
+            + types.map(function(t){
+                return '<div class="ib-trow"><b>'+esc(t)+"</b><span>"+esc(typeDef(t).why)+"</span></div>";
+              }).join("")
+            + "</div>";
+        }).join("")
+      + "</div></div>";
+  }
+
+  html += '<p class="ib-note">Win and pick rates: RivalsTracker, competitive, Diamond+ and all ranks. '
+    + "Ban rates: marvelrivals.gg live sample, Gold III and above. Ribbons and hero types are editorial calls "
+    + "built on those numbers, not extra stats.</p>";
+
+  host.innerHTML = html;
+}
 function roleOf(hero){
   var h = HEROES[hero];
   return h ? h.r : null;
@@ -1437,15 +1891,16 @@ function renderBoard(){
 
   /* ban strip driven by the pick/ban calls, highest ban rate first */
   var banWrap = document.getElementById("banWrap");
-  var banList = Object.keys(BROKEN).filter(function(h){
-    return BROKEN[h].tag==="ban" && roleOf(h)===S.role;
+  var banList = Object.keys(TAGS).filter(function(h){
+    var k = TAGS[h].tag;
+    return (k==="ban" || k==="pick-ban") && roleOf(h)===S.role;
   }).sort(function(a,b){
     return (STATS_D[b]?STATS_D[b][2]:0)-(STATS_D[a]?STATS_D[a][2]:0);
   });
   if(banList.length){
     banWrap.innerHTML = '<span class="bans-label">Ban priority</span>' + banList.map(function(h){
       var br = STATS_D[h] ? STATS_D[h][2] : null;
-      return '<button class="ban" data-hero="'+esc(h)+'"><span class="x" aria-hidden="true">\u00d7</span>'
+      return '<button class="ban" data-hero="'+esc(h)+'" title="'+esc(TAGS[h].why)+'"><span class="x" aria-hidden="true">\u00d7</span>'
         + face(h,24) + esc(nameOf(h)) + (br!=null ? '<span class="br">'+br+'%</span>' : '') + '</button>';
     }).join("");
   }else{
@@ -1457,19 +1912,32 @@ function renderBoard(){
 
 function heroCard(hero,tier){
   var st = statOf(hero);
-  var bro = broOf(hero);
+  var tg = tagOf(hero);
+  var td = tg ? tagDef(tg.tag) : null;
   var pinned = S.favs.indexOf(hero)>-1;
   var nm = nameOf(hero);
   var a = art(hero);
-  return '<div class="card" style="--tier:'+TIER_COLOR[tier]+'">'
+  var ab = ROLE_ABBR[roleOf(hero)] || "";
+  var tyAll = typeOf(hero);
+  var tyTip = tyAll.length > 1
+    ? tyAll.map(function(t){ return t + ": " + typeDef(t).why; }).join(" ")
+    : (tyAll.length ? typeDef(tyAll[0]).why : "");
+  var types = tyAll.length
+    ? '<span data-tipl="'+esc(tyAll.join(" · "))+'" data-tipb="'+esc(tyTip)+'">'+esc(tyAll[0])+'</span>'
+    : "";
+  return '<div class="card" style="--tier:'+TIER_COLOR[tier]+';--role:'+roleTint(hero)+'">'
     + '<button class="card-open" data-hero="'+esc(hero)+'" aria-label="'+esc(nm)+', tier '+tier+(st?', '+st[0]+' percent win rate, '+st[1]+' percent pick rate, '+st[2]+' percent ban rate':'')+'">'
     +   '<span class="card-art">'
     +     '<img src="'+esc(a.src)+'" data-ih="'+esc(hero)+'" data-fb=\''+esc(a.fb)+'\' onerror="imgFail(this)" onload="imgOk(this)"'+rp(a)+' alt="" loading="lazy">'
     +     '<span class="card-tier" data-t="'+tier+'" aria-hidden="true">'+tier+'</span>'
-    +     (bro ? '<span class="card-flag" data-tag="'+bro.tag+'">'+(bro.tag==="ban"?"Must ban":"Must pick")+'</span>' : '')
+    +     (td ? '<span class="card-flag" data-tag="'+esc(tg.tag)+'" data-tipl="'+esc(td.label)+'" data-tipb="'+esc(tg.why)+'">'+esc(td.label)+'</span>' : '')
+    +     (types ? '<span class="card-type">'+types+'</span>' : '')
     +   '</span>'
     +   '<span class="card-body">'
-    +     '<span class="card-name">'+esc(nm)+'</span>'
+    +     '<span class="card-head">'
+    +       (ab ? '<span class="card-role" aria-hidden="true">'+ab+'</span>' : '')
+    +       '<span class="card-name">'+esc(nm)+'</span>'
+    +     '</span>'
     +     '<span class="card-stats">'
     +       (st ? '<span class="cs"><b>'+st[0]+'</b><i>WR</i></span>'
               + '<span class="cs"><b>'+st[1]+'</b><i>PR</i></span>'
@@ -1587,7 +2055,7 @@ function openHero(hero){
   var d = HEROES[hero] || HEROES[nameOf(hero)] || null;
   var info = d || {r:S.role,t:[],c:[],s:[],w:[],m:[],p:[],x:[]};
   var st = statOf(hero);
-  var bro = broOf(hero);
+  var tg = tagOf(hero);
   var nm = nameOf(hero);
   var a = art(hero);
   var da = animOf(hero);
@@ -1604,9 +2072,20 @@ function openHero(hero){
       + '<div class="stat"><b>'+st[2]+'%</b><span>Ban rate</span></div>'
     : '<div class="stat"><b>\u2014</b><span>Awaiting data</span></div>';
 
-  var broHtml = bro
-    ? '<span class="pbchip" data-tag="'+bro.tag+'">'+(bro.tag==="ban"?"Must ban":"Must pick")+'</span>'
-      + '<p class="pbwhy">'+esc(bro.why)+'</p>'
+  var broHtml = tg
+    ? '<span class="pbchip" data-tag="'+tg.tag+'" title="'+esc(tg.why)+'">'+esc(tagDef(tg.tag).label)+'</span>'
+      + '<p class="pbwhy">'+esc(tg.why)+'</p>'
+    : '';
+
+  var whyTxt = (typeof TIER_WHY!=="undefined" && TIER_WHY[hero]) || "";
+  var whyHtml = whyTxt
+    ? '<div class="dsec"><h3>Why this tier</h3><p class="why-tier">'+esc(whyTxt)+'</p></div>'
+    : '';
+  var tipsArr = (typeof TIPS!=="undefined" && TIPS[hero]) || [];
+  var tipsHtml = tipsArr.length
+    ? '<div class="dsec"><h3>Quick tips</h3><ul class="tips">'
+      + tipsArr.map(function(t,i){ return '<li><b>'+(i+1)+'</b><span>'+esc(t)+'</span></li>'; }).join("")
+      + '</ul></div>'
     : '';
 
   function sec(title,arr){
@@ -1641,8 +2120,10 @@ function openHero(hero){
     + '<div class="doss-body">'
     +   '<div class="doss-head"><div class="tags">'+ (info.t||[]).map(function(t){return '<span class="ntag">'+esc(t)+'</span>'}).join("") +'</div>'
     +     '<button class="doss-close" id="dossClose" aria-label="Close hero guide">\u2715</button></div>'
+    +   whyHtml
     +   sec("Openers and rotation",info.c)
     +   comboList(hero)
+    +   tipsHtml
     +   sec("Strengths",info.s)
     +   sec("Weaknesses",info.w)
     +   heroList("Best maps",info.m,"map")
@@ -1801,8 +2282,86 @@ function renderPatch(){
   document.getElementById("patchList").innerHTML = parts.join("") + archive;
 }
 
+function tintOf(role){ return ROLE_TINT[role] || "#8f92c8"; }
+
+function typeHeroes(t){
+  return Object.keys(TYPES).filter(function(h){ return TYPES[h].indexOf(t)>-1; });
+}
+
+function renderTypeRail(){
+  var g = document.getElementById("typeGroup");
+  if(!g) return;
+  var html = '<span class="rail-label" id="lbl-type">Hero type</span>'
+    + '<button class="rail-btn" data-type="" aria-pressed="'+(TYPE_F?"false":"true")+'">All types'
+    + '<span class="rail-note">'+Object.keys(TYPES).length+'</span></button>';
+  TYPE_ORDER.forEach(function(t){
+    html += '<button class="rail-btn" data-type="'+esc(t)+'" aria-pressed="'+(TYPE_F===t?"true":"false")+'">'
+      + esc(t)+'<span class="rail-note">'+typeHeroes(t).length+'</span></button>';
+  });
+  g.innerHTML = html;
+}
+
+function renderTypes(){
+  renderTypeRail();
+  var list = document.getElementById("typeList");
+  var meta = document.getElementById("typeMeta");
+  if(!list) return;
+  var types = TYPE_F ? [TYPE_F] : TYPE_ORDER;
+  var seen = {}, parts = [];
+
+  types.forEach(function(t){
+    var def = typeDef(t);
+    var heroes = typeHeroes(t).slice();
+    var vis = heroes.filter(matches);
+    if(S.q && !vis.length) return;
+
+    heroes.sort(function(a,b){
+      var ta = heroTier(a,S.lobby,roleOf(a)), tb = heroTier(b,S.lobby,roleOf(b));
+      var ra = ta ? TIER_SET.indexOf(ta.tier) : 99;
+      var rb = tb ? TIER_SET.indexOf(tb.tier) : 99;
+      if(ra!==rb) return ra-rb;
+      var sa = statOf(a), sb = statOf(b);
+      return (sb?sb[0]:0)-(sa?sa[0]:0);
+    });
+
+    var rc = {};
+    heroes.forEach(function(h){ var r0 = roleOf(h); if(r0) rc[r0] = (rc[r0]||0)+1; });
+    var rSorted = Object.keys(rc).sort(function(a,b){ return rc[b]-rc[a]; });
+    var roleMix = rSorted.map(function(r0){ return r0+" "+rc[r0]; }).join(" \u00b7 ");
+    var domRole = rSorted[0] || def.group;
+
+    vis.forEach(function(h){ seen[h] = 1; });
+    parts.push('<section class="tplate" style="--c:'+tintOf(domRole)+'">'
+      + '<div class="tp-head">'
+      +   '<h2 class="tp-name">'+esc(t)+'</h2>'
+      +   '<span class="tp-group" style="--c:'+tintOf(domRole)+'">'+esc(roleMix||def.group)+'</span>'
+      +   '<span class="tp-count">'+vis.length+' hero'+(vis.length===1?"":"es")+'</span>'
+      + '</div>'
+      + '<p class="tp-lead">'+esc(def.why||"")+'</p>'
+      + '<div class="tp-expl">'
+      +   '<div><b>What it does</b><span>'+esc(def.does||"")+'</span></div>'
+      +   '<div><b>Its goal</b><span>'+esc(def.goal||"")+'</span></div>'
+      +   '<div><b>How it loses</b><span>'+esc(def.fails||"")+'</span></div>'
+      + '</div>'
+      + '<div class="tp-roster">'+ heroes.map(function(h){
+          var tt = heroTier(h,S.lobby,roleOf(h));
+          return heroCard(h, tt ? tt.tier : "C");
+        }).join("") +'</div>'
+      + '</section>');
+  });
+
+  list.innerHTML = parts.length ? parts.join("")
+    : '<div class="empty"><h3>No heroes match</h3><p>Try a different name, or clear the search.</p>'
+      + '<button class="btn" id="clearEmpty">Clear search</button></div>';
+
+  if(meta) meta.innerHTML = '<span><b>'+(TYPE_F?esc(TYPE_F):"All types")+'</b></span>'
+    + '<span>'+Object.keys(seen).length+' heroes</span>'
+    + '<span>'+types.length+' type'+(types.length===1?"":"s")+'</span>';
+}
+
 function refreshView(){
   if(S.view==="patch") renderPatch();
+  else if(S.view==="types") renderTypes();
   else if(S.view==="maps") renderMaps();
   else renderBoard();
 }
@@ -1984,14 +2543,17 @@ function setView(view){
   document.getElementById("screen-board").hidden = view!=="board";
   document.getElementById("screen-maps").hidden = view!=="maps";
   document.getElementById("screen-patch").hidden = view!=="patch";
+  var stEl = document.getElementById("screen-types");
+  if(stEl) stEl.hidden = view!=="types";
   document.querySelectorAll("[data-view]").forEach(function(b){
     if(b.getAttribute("aria-current")==="page") b.removeAttribute("aria-current");
   });
   var btn = document.querySelector('[data-view="'+view+'"]');
   if(btn) btn.setAttribute("aria-current","page");
   var q = document.getElementById("q");
-  q.placeholder = view==="maps" ? "Search maps" : "Search heroes";
+  q.placeholder = view==="maps" ? "Search maps" : view==="types" ? "Search hero types" : view==="patch" ? "Search changes" : "Search heroes";
   q.value = view==="maps" ? "" : S.q;
+  if(typeof updateCount==="function") updateCount();
   /* lobby, role and pin only filter the tier board */
   var boardOnly = ["lobbyGroup","roleGroup","boardGroup"];
   boardOnly.forEach(function(id){
@@ -2002,14 +2564,18 @@ function setView(view){
   if(modeGroup) modeGroup.hidden = view!=="maps";
   var patchGroup = document.getElementById("patchGroup");
   if(patchGroup) patchGroup.hidden = view!=="patch";
+  var typeGroup = document.getElementById("typeGroup");
+  if(typeGroup) typeGroup.hidden = view!=="types";
   if(view==="maps") renderMaps();
   if(view==="patch") renderPatch();
+  if(view==="types") renderTypes();
   syncHash();
 }
 
 function syncHash(){
   var h = S.view==="maps" ? "maps"
     : S.view==="patch" ? "patch"
+    : S.view==="types" ? (TYPE_F ? "types-"+slugify(TYPE_F) : "types")
     : (S.lobby+"-"+S.role.toLowerCase());
   if(location.hash.slice(1)!==h){
     try{history.replaceState(null,"","#"+h)}catch(e){}
@@ -2104,6 +2670,38 @@ document.addEventListener("click",function(e){
     saveState(); renderBoard(); return;
   }
 
+  var sbBtn = t.closest("[data-search]");
+  if(sbBtn){
+    var sp = document.getElementById("searchPop");
+    if(sp && !sp.hidden) closeSearch(); else openSearch();
+    return;
+  }
+
+  if(t.closest("#qclear")){
+    setSearch("");
+    refreshView();
+    var qi = document.getElementById("q");
+    if(qi) qi.focus();
+    return;
+  }
+
+  if(t.closest("[data-info]")){
+    renderInfo();
+    openOverlay("infoOv","infoClose");
+    return;
+  }
+
+  if(t.closest("#infoClose")){ closeOverlay("infoOv"); return; }
+  if(t.id==="infoOv"){ closeOverlay("infoOv"); return; }
+
+  var tp = t.closest("[data-type]");
+  if(tp){
+    TYPE_F = tp.getAttribute("data-type") || null;
+    renderTypes();
+    syncHash();
+    return;
+  }
+
   var h = t.closest("[data-hero]");
   if(h){ openHero(h.getAttribute("data-hero")); return; }
 
@@ -2147,7 +2745,7 @@ document.addEventListener("click",function(e){
     PATCH_F.k = "all";
     PATCH_F.role = "all";
     S.q = "";
-    document.getElementById("q").value = "";
+    setSearch("");
     renderPatch();
     return;
   }
@@ -2158,7 +2756,7 @@ document.addEventListener("click",function(e){
       document.getElementById("pinBtn").setAttribute("aria-pressed","false");
     }
     S.q = "";
-    document.getElementById("q").value = "";
+    setSearch("");
     renderBoard();
     return;
   }
@@ -2204,6 +2802,7 @@ document.getElementById("q").addEventListener("input",function(e){
     el.innerHTML=html;
   }else{
     S.q = e.target.value.trim();
+    updateCount();
     refreshView();
   }
 });
@@ -2219,17 +2818,24 @@ document.addEventListener("keydown",function(e){
   var typing = tag==="INPUT"||tag==="TEXTAREA";
 
   if(e.key==="Escape"){
+    if(!document.getElementById("infoOv").hidden){ closeOverlay("infoOv"); return; }
+    var popEl = document.getElementById("searchPop");
+    if(popEl && !popEl.hidden){
+      closeSearch();
+      setSearch("");
+      refreshView();
+      return;
+    }
     if(!document.getElementById("ov").hidden){ closeOverlay("ov"); return; }
     if(!document.getElementById("helpOv").hidden){ closeOverlay("helpOv"); return; }
-    if(typing){ document.getElementById("q").value=""; S.q=""; refreshView(); document.activeElement.blur(); }
+    if(typing){ setSearch(""); refreshView(); document.activeElement.blur(); }
     return;
   }
   if(typing) return;
 
   if(e.key==="/"){
     e.preventDefault();
-    document.getElementById("q").focus();
-    document.getElementById("q").select();
+    openSearch();
     return;
   }
   if(e.key==="?"){
@@ -2259,7 +2865,7 @@ document.addEventListener("keydown",function(e){
 });
 
 /* focus trap */
-["ov","helpOv"].forEach(function(id){
+["ov","helpOv","infoOv"].forEach(function(id){
   var box = document.getElementById(id);
   box.addEventListener("keydown",function(e){
     if(e.key!=="Tab") return;
@@ -2276,6 +2882,14 @@ window.addEventListener("hashchange",function(){
   var h = location.hash.slice(1);
   if(h==="maps"){ setView("maps"); return; }
   if(h==="patch"){ setView("patch"); return; }
+  if(h==="types"){ TYPE_F=null; setView("types"); return; }
+  if(h.indexOf("types-")===0){
+    var tslug = h.slice(6);
+    var tf = TYPE_ORDER.filter(function(x){return slugify(x)===tslug})[0];
+    TYPE_F = tf || null;
+    setView("types");
+    return;
+  }
   if(h.indexOf("hero-")===0){
     var slug = h.slice(5);
     var found = Object.keys(HEROES).filter(function(n){return slugify(n)===slug})[0];
@@ -2321,7 +2935,16 @@ loadState();
   }
 })();
 syncRail();
-setView(location.hash.slice(1)==="maps" ? "maps" : location.hash.slice(1)==="patch" ? "patch" : "board");
+var _h0 = location.hash.slice(1);
+if(_h0.indexOf("types-")===0){
+  var _ts = _h0.slice(6);
+  var _tf = TYPE_ORDER.filter(function(x){return slugify(x)===_ts})[0];
+  TYPE_F = _tf || null;
+}
+setView(_h0==="maps" ? "maps"
+  : _h0==="patch" ? "patch"
+  : (_h0==="types"||_h0.indexOf("types-")===0) ? "types"
+  : "board");
 renderBoard();
 document.getElementById("pinCount").textContent = S.favs.length;
 </script>
